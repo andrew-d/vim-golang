@@ -20,7 +20,11 @@ command! -buffer Fmt call s:GoFormat()
 
 function! s:GoFormat()
     let view = winsaveview()
-    silent %!gofmt
+    let l:cmd = 'silent %!gofmt'
+    if exists('g:gofmt_args')
+        let l:cmd = l:cmd . ' ' . g:gofmt_args
+    endif
+    exec l:cmd
     if v:shell_error
         let errors = []
         for line in getline(1, line('$'))
